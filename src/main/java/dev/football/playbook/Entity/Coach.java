@@ -1,13 +1,24 @@
 package dev.football.playbook.Entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(schema="\"Playbook\"", name="\"Coach\"")
 public class Coach {
 
-    private enum CoachType{}
+    private enum CoachType{HEAD, ASSISTANT, OFFENSE, DEFENSE,SPECIAL_TEAMS, }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name="name")
     private String name;
+    @Column(name="type")
     private CoachType type;
+
+    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private Users user;
+    @Column(name="image")
     private String imagePath;
 
     public Coach() {

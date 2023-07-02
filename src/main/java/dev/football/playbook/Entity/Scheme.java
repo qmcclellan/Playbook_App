@@ -1,19 +1,34 @@
 package dev.football.playbook.Entity;
 
+import jakarta.persistence.*;
+
 import java.util.Arrays;
 import java.util.List;
 
+@Entity
+@Table(schema="Playbook", name="Scheme")
 public class Scheme {
 
+
     private enum SchemeType{}
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Column(name="name")
     private String name;
+
+    @Column(name="type")
     private SchemeType type;
+
+    @Column(name="image")
     private String imagePath;
+
+    @ManyToOne
+    @JoinColumn(name="playbook_id", nullable = false)
     private PlayBook playBook;
-    private List<Play> plays;
+
+    @OneToMany(mappedBy = "scheme")
+    private List <Play> plays;
 
     public Scheme() {
     }

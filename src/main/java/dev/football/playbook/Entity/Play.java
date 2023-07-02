@@ -1,36 +1,51 @@
 package dev.football.playbook.Entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(schema = "\"Playbook\"", name = "\"play\"")
 public class Play {
 
-    private enum PlayType{}
-
+    //    private enum PlayType{PASS, RUN, RPO, KICK, PUNT, FAKE_KICK,
+//    FAKE_PUNT, BLITZ, QB_CONTAIN, MAN,ZONE}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "pros")
     private String pros;
+
+    @Column(name = "cons")
     private String cons;
+
+    @Column(name = "image")
     private String imagePath;
-    private PlayType type;
+    //private PlayType type;
+
+    @ManyToOne
+    @JoinColumn(name = "play_id", nullable = false)
     private Scheme scheme;
 
     public Play() {
     }
 
-    public Play(String name, String pros, String cons, String imagePath, PlayType type, Scheme scheme) {
+    public Play(String name, String pros, String cons, String imagePath, Scheme scheme) {
         this.name = name;
         this.pros = pros;
         this.cons = cons;
         this.imagePath = imagePath;
-        this.type = type;
         this.scheme = scheme;
     }
 
-    public Play(Integer id, String name, String pros, String cons, String imagePath, PlayType type) {
+    public Play(Integer id, String name, String pros, String cons, String imagePath) {
         this.id = id;
         this.name = name;
         this.pros = pros;
         this.cons = cons;
         this.imagePath = imagePath;
-        this.type = type;
     }
 
     public Integer getId() {
@@ -73,14 +88,6 @@ public class Play {
         this.imagePath = imagePath;
     }
 
-    public PlayType getType() {
-        return type;
-    }
-
-    public void setType(PlayType type) {
-        this.type = type;
-    }
-
     public Scheme getScheme() {
         return scheme;
     }
@@ -97,8 +104,9 @@ public class Play {
                 ", pros='" + pros + '\'' +
                 ", cons='" + cons + '\'' +
                 ", imagePath='" + imagePath + '\'' +
-                ", type=" + type +
                 ", scheme=" + scheme +
                 '}';
     }
+
+
 }
