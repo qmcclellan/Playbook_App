@@ -8,16 +8,16 @@ import java.util.Collection;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="name")
-    private String name;
+    @Column(name = "name")
+    private String userName;
 
-    @Column(name="pass")
+    @Column(name = "pass")
     private String password;
 
-    @Column(name="enabled")
+    @Column(name = "enabled")
     private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -29,26 +29,26 @@ public class Users {
     public Users() {
     }
 
-    public Users(String name, String password) {
-        this.name = name;
+    public Users(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
-    public Users(Integer id, String name, String password) {
+    public Users(Integer id, String userName, String password) {
         this.id = id;
-        this.name = name;
+        this.userName = userName;
         this.password = password;
     }
 
-    public Users(String name, String password, Boolean enabled) {
-        this.name = name;
+    public Users(String userName, String password, Boolean enabled) {
+        this.userName = userName;
         this.password = password;
         this.enabled = enabled;
     }
 
-    public Users(Integer id, String name, String password, Boolean enabled) {
+    public Users(Integer id, String userName, String password, Boolean enabled) {
         this.id = id;
-        this.name = name;
+        this.userName = userName;
         this.password = password;
         this.enabled = enabled;
     }
@@ -61,12 +61,12 @@ public class Users {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String name) {
+        this.userName = name;
     }
 
     public String getPassword() {
@@ -85,11 +85,19 @@ public class Users {
         this.enabled = enabled;
     }
 
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", enabled=" + enabled +
                 '}';
