@@ -17,7 +17,7 @@ public class PlayBook {
     private String name;
     @Column(name = "type")
     private PlaybookType type;
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name="coach_id")
     private Coach coach;
     @Column(name="team")

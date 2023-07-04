@@ -2,6 +2,9 @@ package dev.football.playbook.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 @Table(schema="\"Playbook\"", name="\"Coach\"")
 public class Coach {
@@ -20,6 +23,8 @@ public class Coach {
     private Users user;
     @Column(name="image")
     private String imagePath;
+    @OneToMany(mappedBy = "coach")
+    List<PlayBook> playBooks;
 
     public Coach() {
     }
@@ -90,6 +95,19 @@ public class Coach {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public List<PlayBook> getPlayBooks() {
+        return playBooks;
+    }
+
+    public void setPlayBooks(List<PlayBook> playBooks) {
+        this.playBooks = playBooks;
+    }
+
+    public void addPlayBooks(PlayBook ...playBooksToAdd){
+
+        playBooks = Arrays.asList(playBooksToAdd);
     }
 
     @Override
