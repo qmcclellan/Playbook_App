@@ -450,9 +450,66 @@ public class PopulateDb {
         return schemesInfo;
     }
 
-    public void getOffensivePlays(){
+    public void getOffensivePlays(String site) {
+
+        List<WebElement> formationLinks = new ArrayList<>();
+        List<WebElement> schemeLinks = new ArrayList<>();
+        String playName;
+        String playImage;
+
+        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
+                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver();// add options back for headless mode
+
+        driver.get(site);
 
 
+        for (int p = 0; p <= 31; p++) {
+            //Get list of all playbook links
+            playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
+
+            // playbookLinks = driver.findElement(By.xpath(".l-sidebar__main > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
+
+            playbookLinks.get(p).click();
+
+            formationLinks = driver.findElement(By.cssSelector(".py-5.wrapper > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
+
+            for (int f = 0; f <= formationLinks.size(); f++) {
+                //number of unordered lists formations
+                formationLinks = driver.findElement(By.cssSelector(".py-5.wrapper > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
+
+                formationLinks.get(f).click();
+
+
+                schemeLinks = driver.findElement(By.cssSelector(".play-tile-list")).findElements(By.cssSelector("a"));
+
+                for (int s = 0; s <= schemeLinks.size()-1; s++) {
+
+                    //Get all scheme links
+                    schemeLinks = driver.findElement(By.cssSelector(".play-tile-list")).findElements(By.cssSelector("a"));
+
+                    schemeLinks.get(s).click();
+
+                    System.out.println( driver.findElement(By.cssSelector("a:nth-of-type("+1+") > .play-tile__info")).getText());
+                    //playName = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__info")).getText(); //change number variable
+
+                    System.out.println(driver.findElement(By.cssSelector("a:nth-of-type("+1+") > .play-tile__image")).getCssValue("background-image"));
+                   // playImage = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__image")).getCssValue("background-image");
+
+                    driver.navigate().back();
+                }
+
+                driver.navigate().back();
+            }
+            //List to catch and record errors that occur
+            List<String> errorList = new ArrayList<>();
+
+            driver.navigate().back();
+
+        }
+
+        driver.quit();
     }
 
     public static void main(String[] args) {
@@ -461,7 +518,7 @@ public class PopulateDb {
 
       //  popDb.getDefensivePlayBooks(popDb.teamPlaybooks);
 
-        popDb.getDefensiveSchemes(popDb.teamPlaybooks);
+        popDb.getOffensivePlays("https://huddle.gg/23/playbooks/");
 
 
 
