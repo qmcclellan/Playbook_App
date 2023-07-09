@@ -57,4 +57,9 @@ public class PlaybookServiceImpl implements PlaybookService {
     public List<PlayBook> findByCoachId(int id) {
         return playbookDao.findByCoachId(id);
     }
+
+    @Override
+    public void saveAll(List<PlayBook> playBooks) {
+        playbookDao.saveAllAndFlush(playBooks);
+    }
 }

@@ -15,4 +15,6 @@ public interface PlaybookService {
 
     public List<PlayBook> findAllByType(String type);
     public List<PlayBook> findByCoachId(int id);
+
+    public void saveAll(List<PlayBook> playBooks);
 }

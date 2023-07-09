@@ -1,9 +1,7 @@
 package dev.football.playbook.Entity;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -11,26 +9,26 @@ import java.util.*;
 
 public class PopulateDb {
 
-     private String teamImages = "https://loodibee.com/nfl/";
-     private String teamPlaybooks ="https://huddle.gg/23/playbooks/";
+     private final String teamImages = "https://loodibee.com/nfl/";
+     private final String teamPlaybooks ="https://huddle.gg/23/playbooks/";
 
-     private  ChromeOptions options = new ChromeOptions();
+     private  final ChromeOptions options = new ChromeOptions();
 
-    private List<WebElement> playbookLinks;
+     private  List<WebElement> playBookLinks;
+
+     private final int offTotal = 32;
+
+
 
     public PopulateDb() {
     }
 
     public WebDriver createDriver() {
 
-
-
         options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
                 "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
 
-     WebDriver  driver = new ChromeDriver(options);// add options back for headless mode
-
-        return driver;
+        return new ChromeDriver(options);
     }
 
     public Map<String, String> getTeamImages(String site){
@@ -58,7 +56,7 @@ public class PopulateDb {
             //Get team image list
             elements = driver.findElement(By.xpath("//main[@id='main']/article//div[@class='entry-content']/div[3]")).findElements(By.cssSelector("figure"));
 
-            if(driver.findElement(By.xpath("//main[@id='main']/article//div[@class='entry-content']/div[3]")).findElements(By.cssSelector("figure")).size()<=0) {
+            if(driver.findElement(By.xpath("//main[@id='main']/article//div[@class='entry-content']/div[3]")).findElements(By.cssSelector("figure")).size() == 0) {
 
                 //Get team image list
                 elements = driver.findElement(By.xpath("//main[@id='main']/article//div[@class='entry-content']/div[4]")).findElements(By.cssSelector("figure"));
@@ -91,39 +89,58 @@ public class PopulateDb {
 
     }
 
-    public  Map<String,Set<String>> getOffensivePlayBooks(String site){
 
-        int offTotal;
+    public List<WebElement> choosePlayBooks(String playbooksType){
+
+      List<WebElement> playbookLinks = new ArrayList<>();
+
+        WebDriver driver = createDriver();
+
+        driver.get(teamPlaybooks);
+
+
+        if(playbooksType.toUpperCase().equals("OFFENSE")){
+
+            //Get list of all playbook links
+            playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
+
+
+        }else if(playbooksType.toUpperCase().equals("DEFENSE")){
+
+            //Get list of all playbook links
+            playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[2]")).findElements(By.cssSelector("li"));
+
+        }
+        driver.quit();
+
+        return playbookLinks;
+    }
+
+
+    public  Map<String,Set<String>> getPlayBooks(String site,String playBookType){
+
+
         int formationTotal;
         String playbookName;
         String formationName;
 
         Map<String, Set<String>> playBookMap = new HashMap<>();
 
-        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
-                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
-
-        WebDriver  driver = new ChromeDriver(options);// add options back for headless mode
+        WebDriver  driver = createDriver();
 
         driver.get(site);
 
         //Get list of all playbook links
-         playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
-
-        //Get number of links
-        offTotal = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li")).size();
+        playBookLinks = choosePlayBooks(playBookType);
 
         System.out.println(offTotal);
+
         for(int i=0; i<= offTotal-1; i++){
 
             Set<String> formations = new HashSet<>();
 
-            //Get list of all playbook links
-            playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
-
-
             //Click on the first link
-            playbookLinks.get(i).click();
+            playBookLinks.get(i).click();
 
             //Get Playbook name
             playbookName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
@@ -154,94 +171,28 @@ public class PopulateDb {
         return playBookMap;
     }
 
-    public  Map<String,Set<String>> getDefensivePlayBooks(String site){
-
-        int defTotal;
-        int formationTotal;
-        String playbookName;
-        String formationName;
-
-        Map<String, Set<String>> playBookMap = new HashMap<>();
-
-        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
-                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
-
-        WebDriver  driver = new ChromeDriver(options);// add options back for headless mode
-
-        driver.get(site);
-
-        //Get list of all playbook links
-         playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[2]")).findElements(By.cssSelector("li"));
-
-        //Get number of links
-        defTotal = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[2]")).findElements(By.cssSelector("li")).size();
-
-        //for debugging
-        //System.out.println(total);
-        for(int i=0; i<= defTotal-1; i++){
-
-            Set<String> formations = new HashSet<>();
-
-            //Get list of all playbook links
-            playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[2]")).findElements(By.cssSelector("li"));
 
 
-            //Click on the first link
-            playbookLinks.get(i).click();
-
-            //Get Playbook name
-            playbookName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
-
-            //Getting the number of formations on page
-            formationTotal =driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div")).findElements(By.cssSelector("h3")).size();
-
-            for(int f = 1; f<= formationTotal; f++){
-                //Getting formation name
-                formationName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div/h3["+f+"]")).getText();
-
-                formations.add(formationName);
-            }
-
-            playBookMap.put(playbookName,formations);
-
-            int j = i+1;
-
-            //For debugging
-           // System.out.println(j+": "+playbookName+" "+"no of formations: "+formationTotal+"\n"+ formations+ "\n");
-
-            driver.navigate().back();
-        }
-
-
-
-        driver.quit();
-
-        return playBookMap;
-    }
-
-    public Map<String,Set<String>> getOffensiveSchemes(String site){
+    public Map<String,Set<String>> getSchemes(String site, String playBookTypes){
 
         Map<String,Set<String>> schemesInfo = new TreeMap<>();
         Set<String> schemes = new HashSet<>();
         String  formationName = null;
-        String schemeName = null;
-        int schemeTotal = 0;
-        int i = 0; //offenseNumber
+        String schemeName;
+        int schemeTotal;
+        int i; //offenseNumber
         int f = 1; //Formation Number
         int s = 0; //Scheme number
 
-        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
-                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
-
-        WebDriver  driver = new ChromeDriver(options);// add options back for headless mode
+        WebDriver  driver = createDriver();
 
         driver.get(site);
 
         //Get list of all playbook links
-        playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
+        playBookLinks = choosePlayBooks(playBookTypes);
 
         //Get number of links
-      int offTotal = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li")).size();
+         int offTotal = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li")).size();
 
 
             //List to catch and record errors that occur
@@ -251,14 +202,8 @@ public class PopulateDb {
             for (i = 0; i <= offTotal - 1; i++) { //change back to 0
                 try {
 
-
-
-                //Get list of all playbook links
-                playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
-
-
                 //Click on the first link
-                playbookLinks.get(i).click();
+                playBookLinks.get(i).click();
 
                 //Get Playbook name
                 String playbookName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
@@ -334,248 +279,112 @@ public class PopulateDb {
         return schemesInfo;
     }
 
-    public Map<String,Set<String>> getDefensiveSchemes(String site){
-
-        Map<String,Set<String>> schemesInfo = new TreeMap<>();
-        Set<String> schemes = new HashSet<>();
-        String  formationName = null;
-        String schemeName = null;
-        int schemeTotal = 0;
-        int i = 0; //offenseNumber
-        int f = 1; //Formation Number
-        int s = 0; //Scheme number
-
-        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
-                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
-
-        WebDriver  driver = new ChromeDriver(options);// add options back for headless mode
-
-        driver.get(site);
-
-        //Get list of all playbook links
-        playbookLinks = driver.findElement(By.cssSelector(".l-sidebar__main > ul:nth-of-type(2)")).findElements(By.cssSelector("li"));
-
-        //Get number of links
-        int defTotal = driver.findElement(By.cssSelector(".l-sidebar__main > ul:nth-of-type(2)")).findElements(By.cssSelector("li")).size();
 
 
+    public void getPlays(String site, String playbookType) {
+
+        List<WebElement> formationLinks;
+        List<WebElement> schemeLinks;
+        String playName;
+        String playImage;
         //List to catch and record errors that occur
         List<String> errorList = new ArrayList<>();
 
-         System.out.println(defTotal);
-        for (i = 0; i <= defTotal - 1; i++) { //change back to 0
-            try {
+        WebDriver driver = createDriver();
 
+        driver.get(site);
 
+            for (int p = 0; p <= 31; p++) {
 
                 //Get list of all playbook links
-               playbookLinks = driver.findElement(By.cssSelector(".l-sidebar__main > ul:nth-of-type(2)")).findElements(By.cssSelector("li"));
+                playBookLinks = choosePlayBooks(playbookType);
+                // playbookLinks = driver.findElement(By.xpath(".l-sidebar__main > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
 
-
-                //Click on the first link
-                playbookLinks.get(i).click();
+                playBookLinks.get(p).click();
 
                 //Get Playbook name
                 String playbookName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
 
-                 System.out.println(playbookName);
+                System.out.println(playbookName);
 
-                //Getting the number of formations on page
-                int formationTotal = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div")).findElements(By.cssSelector("h3")).size();
+              int  formationLinksSize = driver.findElement(By.cssSelector(".py-5.wrapper > ul:nth-of-type(1)")).findElements(By.cssSelector("li")).size();
 
-                 System.out.println(formationTotal);
+                for (int f = 0; f <= formationLinksSize ; f++) {
 
-                for ( f = 1; f <= formationTotal; f++) {//Change back to 1
-                    driver.navigate().refresh();
+                    try {
 
-                    formationName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div/h3[" + f + "]")).getText();
+                        //number of unordered lists formations
+                        formationLinks = driver.findElement(By.cssSelector(".py-5.wrapper > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
 
-                       System.out.println(formationName);
+                        formationLinks.get(f).click();
 
-                    schemeTotal = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div/ul[" + f + "]")).findElements(By.cssSelector("li")).size() - 1;
+                        String formationName = driver.findElement(By.cssSelector(".heading.heading--blue")).getText();
 
-                     System.out.println(schemeTotal + 1);
+                        System.out.println(formationName);
 
-                        for ( s = 0; s <= schemeTotal; s++) {
+                    }catch (TimeoutException exc){
+
+                        driver.navigate().refresh();
+                        continue;
+                    }
+
+                    int schemeLinksSize = 0;
+
+                        try {
+                         schemeLinksSize  = driver.findElement(By.cssSelector(".play-tile-list")).findElements(By.cssSelector("a")).size();
 
 
-                            //Element goes dead after iterating
+                        }catch (NoSuchElementException exc){
+                            formationLinks.get(f).click();
 
-                            List<WebElement> schemeElements = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div/ul[" + f + "]")).findElements(By.cssSelector("li"));
+                           // continue;
+                        }
+                        for (int s = 0; s <= schemeLinksSize - 1; s++) {
 
 
-                            schemeElements.get(s).click();
+
+                                //Get all scheme links
+                                schemeLinks = driver.findElement(By.cssSelector(".play-tile-list")).findElements(By.cssSelector("a"));
+
+                                schemeLinks.get(s).click();
+
+                               // String schemeName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
+
+                                //  System.out.println(schemeName);
+
+                                System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(" + 1 + ") > .play-tile__info")).getText());
+                                //playName = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__info")).getText(); //change number variable
+
+                                System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(" + 1 + ") > .play-tile__image")).getCssValue("background-image"));
+                                // playImage = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__image")).getCssValue("background-image");
 
 
-                            schemeName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
-
-                            //    System.out.println(schemeName + "\n");
-
-                            schemes.add(schemeName);
-
+                                driver.navigate().back();
+                            }
+                            driver.navigate().refresh();
                             driver.navigate().back();
                         }
 
 
-                    //driver.navigate().back();
+                        driver.navigate().back();
+                    }
                 }
 
-                String playbookFormation = playbookName +"_" +formationName;
-
-                schemesInfo.put(playbookFormation, schemes);
-
-                driver.navigate().back();
-
-            }catch(Exception exc) {
-                String defense = "Defensive number: "+ i;
-                String formation = "Formation number: "+f;
-                String scheme = "Scheme number: " + s;
-
-                System.out.println("\n");
-                System.out.println(defense+"\n");
-                System.out.println(formation +"\n");
-                System.out.println(scheme +"\n");
-                System.out.println("************************************");
-                errorList.add(defense+"\n"+formation+"\n"+scheme);
-
-                schemes.clear();
-            }
-
-        }
-
-        driver.quit();
-
-        System.out.println(schemesInfo);
-
-        return schemesInfo;
-    }
-
-    public void getOffensivePlays(String site) {
-
-        List<WebElement> formationLinks = new ArrayList<>();
-        List<WebElement> schemeLinks = new ArrayList<>();
-        String playName;
-        String playImage;
-
-        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
-                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
-
-        WebDriver driver = new ChromeDriver();// add options back for headless mode
-
-        driver.get(site);
+            // driver.quit();
 
 
-        for (int p = 0; p <= 31; p++) {
-            //Get list of all playbook links
-            playbookLinks = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
-
-            // playbookLinks = driver.findElement(By.xpath(".l-sidebar__main > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
-
-            playbookLinks.get(p).click();
-
-            formationLinks = driver.findElement(By.cssSelector(".py-5.wrapper > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
-
-            for (int f = 0; f <= formationLinks.size(); f++) {
-                //number of unordered lists formations
-                formationLinks = driver.findElement(By.cssSelector(".py-5.wrapper > ul:nth-of-type(1)")).findElements(By.cssSelector("li"));
-
-                formationLinks.get(f).click();
-
-
-                schemeLinks = driver.findElement(By.cssSelector(".play-tile-list")).findElements(By.cssSelector("a"));
-
-                for (int s = 0; s <= schemeLinks.size()-1; s++) {
-
-                    //Get all scheme links
-                    schemeLinks = driver.findElement(By.cssSelector(".play-tile-list")).findElements(By.cssSelector("a"));
-
-                    schemeLinks.get(s).click();
-
-                    System.out.println( driver.findElement(By.cssSelector("a:nth-of-type("+1+") > .play-tile__info")).getText());
-                    //playName = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__info")).getText(); //change number variable
-
-                    System.out.println(driver.findElement(By.cssSelector("a:nth-of-type("+1+") > .play-tile__image")).getCssValue("background-image"));
-                   // playImage = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__image")).getCssValue("background-image");
-
-                    driver.navigate().back();
-                }
-
-                driver.navigate().back();
-            }
-            //List to catch and record errors that occur
-            List<String> errorList = new ArrayList<>();
-
-            driver.navigate().back();
-
-        }
-
-        driver.quit();
-    }
 
     public static void main(String[] args) {
 
         PopulateDb popDb = new PopulateDb();
 
-      //  popDb.getDefensivePlayBooks(popDb.teamPlaybooks);
+        //  popDb.getDefensivePlayBooks(popDb.teamPlaybooks);
 
-        popDb.getOffensivePlays("https://huddle.gg/23/playbooks/");
-
-
-
-       //popDb.getTeamImages("https://loodibee.com/nfl/"); team image site
+        popDb.getPlays("https://huddle.gg/23/playbooks/", "Offense");
 
 
+        //popDb.getTeamImages("https://loodibee.com/nfl/"); team image site
 
 
-//        ChromeOptions options = new ChromeOptions();
-//
-//        options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors",
-//                "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage");
-//
-//        WebDriver  driver = new ChromeDriver(options);// add options back for headless mode
-//
-//        driver.get("https://huddle.gg/23/playbooks/");
-//
-//        //Get list of all offensive playbook links count
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li")).size());
-//
-//        //Get list of all playbook links
-//        List<WebElement> elements = driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/ul[1]")).findElements(By.cssSelector("li"));
-//
-//        //Click on the first link
-//        elements.get(0).click();
-//
-//        //Get Playbook name
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText());
-//
-//        //Getting the number of formations on page
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div")).findElements(By.cssSelector("h3")).size());
-//
-//        //Getting formation name
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='l-sidebar__main']/div")).findElement(By.cssSelector("h3")).getText());
-//
-//        //Getting number of schemes
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']//div[@class='l-sidebar__main']/div/ul[1]")).findElements(By.cssSelector("li")).size());
-//
-//        //Loop through to get each scheme name
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']//div[@class='l-sidebar__main']/div/ul[1]")).findElement(By.cssSelector("ul:nth-of-type(1) > li:nth-of-type(1) > .playbooks-list__link")).getText());
-//
-//        //Click scheme link
-//        driver.findElement(By.xpath("/html//div[@class='body-content']//div[@class='l-sidebar__main']/div/ul[1]")).findElement(By.cssSelector("ul:nth-of-type(1) > li:nth-of-type(1) > .playbooks-list__link")).click();
-//
-//        //Get scheme name
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText());
-//
-//        //Get number of plays
-//        System.out.println(driver.findElement(By.xpath("/html//div[@class='body-content']/div//div[@class='play-tile-list']")).findElements(By.cssSelector("a")).size());
-//
-//        //Get play name
-//        System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(1) > .play-tile__info")).getText());
-//
-//        //Get play picture location
-//        System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(1) > .play-tile__image")).getCssValue("background-image"));
-
-//        driver.quit();
     }
-
 }
