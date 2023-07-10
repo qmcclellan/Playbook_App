@@ -15,7 +15,6 @@ public class PopulateDb {
     private final String teamPlaybooks = "https://huddle.gg/23/playbooks/";
 
     private final ChromeOptions options = new ChromeOptions();
-    private final int offTotal = 32;
     private List<WebElement> playBookLinks;
 
 
@@ -28,7 +27,7 @@ public class PopulateDb {
 
         //  popDb.getDefensivePlayBooks(popDb.teamPlaybooks);
 
-        popDb.getPlays("https://huddle.gg/23/playbooks/", "Offense");
+        popDb.getPlays("Offense");
 
 
         //popDb.getTeamImages("https://loodibee.com/nfl/"); team image site
@@ -36,8 +35,10 @@ public class PopulateDb {
 
     }
 
-    public void getPlays(String site, String playbookType) {
+    public void getPlays( String playbookType) {
 
+
+        String teamPlaybooks = "https://huddle.gg/23/playbooks/";
         List<WebElement> formationLinks;
         List<WebElement> schemeLinks;
         List<WebElement> playLinks;
@@ -48,7 +49,7 @@ public class PopulateDb {
 
         WebDriver driver = createDriver();
 
-        driver.get(site);
+        driver.get(teamPlaybooks);
 
         for (int pb = 0; pb <= 31; pb++) {//change to 0
               driver.navigate().refresh();
@@ -110,13 +111,13 @@ public class PopulateDb {
 
                             // String schemeName = driver.findElement(By.xpath("/html//div[@class='body-content']/div//h1[@class='heading heading--blue']")).getText();
 
-                            System.out.println(p + "*****************************");
+                            //System.out.println(p + "*****************************");
 
-                            System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(" + 1 + ") > .play-tile__info")).getText());
-                            //playName = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__info")).getText(); //change number variable
+                            //System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(" + 1 + ") > .play-tile__info")).getText());
+                            playName = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__info")).getText(); //change number variable
 
-                            System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(" + 1 + ") > .play-tile__image")).getCssValue("background-image"));
-                            // playImage = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__image")).getCssValue("background-image");
+                            //System.out.println(driver.findElement(By.cssSelector("a:nth-of-type(" + 1 + ") > .play-tile__image")).getCssValue("background-image"));
+                            playImage = driver.findElement(By.cssSelector("a:nth-of-type(s) > .play-tile__image")).getCssValue("background-image");
 
 
                             driver.navigate().back();
@@ -125,9 +126,6 @@ public class PopulateDb {
 
                     } catch (Exception exc) {
 
-                        //driver.navigate().refresh();
-
-                        // driver.navigate().back();
                         continue;
                     }
 
@@ -138,8 +136,12 @@ public class PopulateDb {
 
             }
 
+
+
             driver.navigate().back();
         }
+
+        driver.quit();
     }
 
     public Map<String, String> getTeamImages(String site) {
@@ -224,6 +226,7 @@ public class PopulateDb {
         //Get list of all playbook links
         playBookLinks = choosePlayBooks(driver, playBookType);
 
+        int offTotal = 32;
         System.out.println(offTotal);
 
         for (int i = 0; i <= offTotal - 1; i++) {

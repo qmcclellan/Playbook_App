@@ -17,37 +17,50 @@ public class PlayBook {
     private String name;
     @Column(name = "type")
     private PlaybookType type;
+    @Transient
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name="coach_id")
     private Coach coach;
-    @Column(name="team")
-    private String team;
-    @Column(name="image")
-    private String teamImagePath;
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(name="team_id")
+    private Team team;
 
-    @OneToMany(mappedBy = "playBook")
-    private List <Scheme> schemes;
+    @OneToMany(mappedBy = "playbook")
+    private List<Formation> formations;
 
 
     public PlayBook() {
     }
 
-    public PlayBook(String name, PlaybookType type, String team, String teamImagePath, Coach coach) {
+    public PlayBook(String name, PlaybookType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public PlayBook(Integer id, String name, PlaybookType type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+    }
+
+
+    public PlayBook(String name, PlaybookType type, Team team, List<Formation> formations) {
         this.name = name;
         this.type = type;
         this.team = team;
-        this.teamImagePath = teamImagePath;
-        this.coach = coach;
+        this.formations = formations;
     }
 
-    public PlayBook(Integer id, String name, PlaybookType type, String team, String teamImagePath, Coach coach) {
+
+
+    public PlayBook(Integer id, String name, PlaybookType type, Team team, List<Formation> formations) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.team = team;
-        this.teamImagePath = teamImagePath;
-        this.coach = coach;
+        this.formations = formations;
     }
+
 
     public Integer getId() {
         return id;
@@ -73,20 +86,12 @@ public class PlayBook {
         this.type = type;
     }
 
-    public String getTeam() {
+    public Team getTeam() {
         return team;
     }
 
-    public void setTeam(String team) {
+    public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public String getTeamImagePath() {
-        return teamImagePath;
-    }
-
-    public void setTeamImagePath(String teamImagePath) {
-        this.teamImagePath = teamImagePath;
     }
 
     public Coach getCoach() {
@@ -97,21 +102,21 @@ public class PlayBook {
         this.coach = coach;
     }
 
-    public List<Scheme> getSchemes() {
-        return schemes;
+    public List<Formation> getFormations() {
+        return formations;
     }
 
-    public void setSchemes(List<Scheme> schemes) {
-        this.schemes = schemes;
+    public void setFormations(List<Formation> schemes) {
+        this.formations= formations;
     }
 
-    public void addSchemes(Scheme ...schemesToAdd){
+    public void addFormations(Formation ...formationsToAdd){
 
-        if(schemes == null){
-            schemes = new ArrayList<>();
+        if(formations == null){
+            formations = new ArrayList<>();
         }
 
-        schemes = Arrays.asList(schemesToAdd);
+        formations = Arrays.asList(formationsToAdd);
     }
 
     @Override
@@ -120,9 +125,9 @@ public class PlayBook {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
-                ", team='" + team + '\'' +
-                ", teamImagePath='" + teamImagePath + '\'' +
                 ", coach=" + coach +
+                ", team=" + team +
+                ", formations=" + formations +
                 '}';
     }
 }

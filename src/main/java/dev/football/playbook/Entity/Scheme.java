@@ -24,8 +24,10 @@ public class Scheme {
     private String imagePath;
 
     @ManyToOne
-    @JoinColumn(name="playbook_id", nullable = false)
-    private PlayBook playBook;
+    @JoinColumn(name="formation_id")
+    private Formation formations;
+
+
 
     @OneToMany(mappedBy = "scheme")
     private List <Play> plays;
@@ -33,19 +35,19 @@ public class Scheme {
     public Scheme() {
     }
 
-    public Scheme(String name, SchemeType type, String imagePath, PlayBook playBook) {
+    public Scheme(String name, SchemeType type, String imagePath, Formation formations) {
         this.name = name;
         this.type = type;
         this.imagePath = imagePath;
-        this.playBook = playBook;
+        this.formations = formations;
     }
 
-    public Scheme(Integer id, String name, SchemeType type, String imagePath, PlayBook playBook) {
+    public Scheme(Integer id, String name, SchemeType type, String imagePath, Formation formations) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.imagePath = imagePath;
-        this.playBook = playBook;
+        this.formations = formations;
     }
 
     public Integer getId() {
@@ -80,12 +82,12 @@ public class Scheme {
         this.imagePath = imagePath;
     }
 
-    public PlayBook getPlayBook() {
-        return playBook;
+    public Formation getFormations() {
+        return formations;
     }
 
-    public void setPlayBook(PlayBook playBook) {
-        this.playBook = playBook;
+    public void setFormations(Formation formation) {
+        this.formations = formation;
     }
 
     public List<Play> getPlays() {
@@ -109,7 +111,8 @@ public class Scheme {
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", imagePath='" + imagePath + '\'' +
-                ", playBook=" + playBook +
+                ", formations=" + formations +
+                ", plays=" + plays +
                 '}';
     }
 }
