@@ -2,6 +2,7 @@ package dev.football.playbook.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -100,7 +101,11 @@ public class Scheme {
 
     public void addPlay(Play ...newPlays){
 
-            plays = Arrays.stream(newPlays).toList();
+        if(plays  == null){
+            plays  = new ArrayList<>();
+        }
+
+        plays  = Arrays.asList(newPlays);
 
     }
 

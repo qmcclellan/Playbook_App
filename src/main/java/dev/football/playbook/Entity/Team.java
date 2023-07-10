@@ -2,6 +2,8 @@ package dev.football.playbook.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -10,14 +12,14 @@ public class Team {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name="name")
     private String name;
     @Column(name="image")
     private String image;
 
     @OneToMany(mappedBy="team")
-    List<PlayBook> playBook;
+    List<PlayBook> playBooks;
 
     public Team() {
     }
@@ -55,6 +57,23 @@ public class Team {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<PlayBook> getPlayBooks() {
+        return playBooks;
+    }
+
+    public void setPlayBooks(List<PlayBook> playBook) {
+        this.playBooks = playBook;
+    }
+
+    public void addPlayBooks(PlayBook ...playbooks){
+
+        if(playBooks == null){
+            playBooks= new ArrayList<>();
+        }
+
+        playBooks = Arrays.asList(playbooks);
     }
 
     @Override
