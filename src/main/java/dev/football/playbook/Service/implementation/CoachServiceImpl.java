@@ -48,8 +48,8 @@ public class CoachServiceImpl implements CoachService {
         coachDao.deleteById(id);
     }
 
-    @Override
-    public Coach findCoachByUsersId(int id) {
-        return coachDao.findCoachByUsersId(id);
-    }
+//    @Override
+//    public Coach findCoachByUsersId(int id) {
+//        return coachDao.findCoachByUsersId(id);
+//    }
 }

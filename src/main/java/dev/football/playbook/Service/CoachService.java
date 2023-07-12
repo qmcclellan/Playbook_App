@@ -13,5 +13,5 @@ public interface CoachService {
     public void updateCoach(Coach coach);
     public void deleteCoach(int id);
 
-    public Coach findCoachByUsersId(int id);
+  //  public Coach findCoachByUsersId(int id);
 }

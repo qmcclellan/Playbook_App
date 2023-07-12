@@ -15,12 +15,14 @@ public class Formation {
     @Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy = "formation")
-    private List<Scheme> schemes;
-
     @ManyToOne
     @JoinColumn(name = "playbook_id")
     PlayBook playBook;
+
+    @OneToMany(mappedBy = "formation")
+    private List<Scheme> schemes;
+
+
 
     public Formation() {
     }
@@ -34,14 +36,27 @@ public class Formation {
         this.name = name;
     }
 
-    public Formation(String name, List<Scheme> schemes) {
+    public Formation(String name, PlayBook playBook) {
         this.name = name;
+        this.playBook = playBook;
+    }
+
+    public Formation(Integer id, String name, PlayBook playBook) {
+        this.id = id;
+        this.name = name;
+        this.playBook = playBook;
+    }
+
+    public Formation(String name, PlayBook playBook, List<Scheme> schemes) {
+        this.name = name;
+        this.playBook = playBook;
         this.schemes = schemes;
     }
 
-    public Formation(Integer id, String name, List<Scheme> schemes) {
+    public Formation(Integer id, String name, PlayBook playBook, List<Scheme> schemes) {
         this.id = id;
         this.name = name;
+        this.playBook = playBook;
         this.schemes = schemes;
     }
 
@@ -61,6 +76,14 @@ public class Formation {
         this.name = name;
     }
 
+    public PlayBook getPlayBook() {
+        return playBook;
+    }
+
+    public void setPlayBook(PlayBook playBook) {
+        this.playBook = playBook;
+    }
+
     public List<Scheme> getSchemes() {
         return schemes;
     }
@@ -68,6 +91,4 @@ public class Formation {
     public void setSchemes(List<Scheme> schemes) {
         this.schemes = schemes;
     }
-
-
 }

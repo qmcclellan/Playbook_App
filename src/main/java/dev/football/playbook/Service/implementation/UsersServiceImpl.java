@@ -54,10 +54,10 @@ public class UsersServiceImpl implements UserService {
         usersDao.deleteById(id);
     }
 
-    @Override
-    public Users findUsersByCoachId(int id) {
-        return usersDao.findUsersByCoachId(id);
-    }
+//    @Override
+//    public Users findUsersByCoachId(int id) {
+//        return usersDao.findUsersByCoachId(id);
+//    }
 
 
     @Override

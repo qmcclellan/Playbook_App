@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CoachDao extends JpaRepository<Coach,Integer> {
 
-    public Coach findCoachByUsersId(int id);
+  //  public Coach findCoachByUsersId(int id);
 
 }

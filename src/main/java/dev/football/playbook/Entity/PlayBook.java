@@ -17,7 +17,7 @@ public class PlayBook {
     private String name;
     @Column(name = "type")
     private PlaybookType type;
-    @Transient
+
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name="coach_id")
     private Coach coach;
@@ -25,7 +25,7 @@ public class PlayBook {
     @JoinColumn(name="team_id")
     private Team team;
 
-    @OneToMany(mappedBy = "playbook")
+    @OneToMany(mappedBy = "playBook")
     private List<Formation> formations;
 
 

@@ -14,5 +14,5 @@ public interface UserService extends UserDetailsService {
     public void UpdateUser(Users user);
     public void deleteUsers(int id);
 
-    public Users findUsersByCoachId(int id);
+   // public Users findUsersByCoachId(int id);
 }

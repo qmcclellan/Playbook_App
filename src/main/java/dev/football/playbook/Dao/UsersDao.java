@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsersDao extends JpaRepository<Users,Integer> {
 
-    public Users findUsersByCoachId(int id);
+//    public Users findUsersByCoachId(int id);
 
     public Users findByUserName(String username);
 

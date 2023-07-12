@@ -1,11 +1,13 @@
 package dev.football.playbook.Entity;
 
+import dev.football.playbook.Service.implementation.TeamServiceImpl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -18,22 +20,32 @@ public class PopulateDb {
     private List<WebElement> playBookLinks;
 
 
+
+    private TeamServiceImpl teamService;
+
+
     public PopulateDb() {
     }
-
-    public static void main(String[] args) {
-
-        PopulateDb popDb = new PopulateDb();
-
-        //  popDb.getDefensivePlayBooks(popDb.teamPlaybooks);
-
-        popDb.getPlays("Offense");
-
-
-        //popDb.getTeamImages("https://loodibee.com/nfl/"); team image site
-
-
+    @Autowired
+    public PopulateDb(TeamServiceImpl teamService) {
+        this.teamService = teamService;
     }
+
+//    public static void main(String[] args) {
+//
+//
+//
+//        PopulateDb popDb = new PopulateDb();
+//
+//        //  popDb.getDefensivePlayBooks(popDb.teamPlaybooks);
+//
+//        //popDb.getPlays("Offense");
+//
+//
+//        popDb.getTeamImages(); //team image site
+//
+//
+//    }
 
     public void getPlays( String playbookType) {
 
@@ -144,13 +156,13 @@ public class PopulateDb {
         driver.quit();
     }
 
-    public Map<String, String> getTeamImages(String site) {
+    public void getTeamImages() {
 
-        Map<String, String> teamInfo = new HashMap<>();
+       List<Team> teamInfo = new ArrayList<>();
 
         WebDriver driver = createDriver();
 
-        driver.get(site);
+        driver.get(teamImages);
 
         String teamName;
 
@@ -177,10 +189,13 @@ public class PopulateDb {
                 //Get image location
                 imagePath = elements.get(1).findElement(By.cssSelector("img")).getAttribute("src");
 
-                teamInfo.put(teamName, imagePath);
+
 
                 //   System.out.println("No."+(i+1)+" : "+ teamName+" \n"+ "image Location: "+ imagePath );
 
+                Team team = new Team(teamName, imagePath);
+
+                teamInfo.add(team);
                 driver.navigate().back();
 
                 continue;
@@ -189,16 +204,21 @@ public class PopulateDb {
             imagePath = elements.get(1).findElement(By.cssSelector("img")).getAttribute("src");
 
 
-            teamInfo.put(teamName, imagePath);
+            Team team = new Team(teamName, imagePath);
+
+            teamInfo.add(team);
 
             System.out.println("No." + (i + 1) + " : " + teamName + " \n" + "image Location: " + imagePath);
+
+
 
             driver.navigate().back();
         }
 
         driver.quit();
 
-        return teamInfo;
+        System.out.println(teamService.saveTeamAndFlush(teamInfo));
+
 
     }
 

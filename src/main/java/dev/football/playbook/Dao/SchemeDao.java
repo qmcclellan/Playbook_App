@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface SchemeDao extends JpaRepository<Scheme,Integer> {
 
-    public List<Scheme> findAllByPlayBookId(int id);
-    public Scheme findByPlayId(int id);
+//    public List<Scheme> findAllByPlayBookId(int id);
+//    public Scheme findByPlayId(int id);
 }

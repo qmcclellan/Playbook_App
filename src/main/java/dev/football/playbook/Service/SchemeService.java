@@ -13,6 +13,6 @@ public interface SchemeService {
     public  void updateScheme(Scheme scheme);
     public void deleteScheme(int id);
 
-    public List<Scheme> findAllByPlayBookId(int id);
-    public Scheme findByPlayId(int id);
+//    public List<Scheme> findAllByPlayBookId(int id);
+//    public Scheme findByPlayId(int id);
 }

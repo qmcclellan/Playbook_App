@@ -4,9 +4,10 @@ import dev.football.playbook.Dao.FormationDao;
 import dev.football.playbook.Entity.Formation;
 import dev.football.playbook.Service.FormationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class FormationServiceImpl implements FormationService {
 
     private FormationDao formationDao;
