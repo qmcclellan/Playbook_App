@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Login">
+   <children>
+      <AnchorPane layoutX="160.0" layoutY="46.0" prefHeight="265.0" prefWidth="281.0">
+         <children>
+            <Button layoutX="32.0" layoutY="180.0" mnemonicParsing="false" text="Login" />
+            <Button layoutX="199.0" layoutY="180.0" mnemonicParsing="false" text="Sign Up" />
+            <Label layoutX="20.0" layoutY="79.0" text="Username" />
+            <Label layoutX="22.0" layoutY="124.0" text="Password" />
+            <PasswordField layoutX="84.0" layoutY="120.0" />
+            <Hyperlink layoutX="55.0" layoutY="220.0" text="Forgot User" />
+            <Hyperlink layoutX="141.0" layoutY="220.0" text="Forgot Password" />
+            <TextField layoutX="84.0" layoutY="75.0" />
+            <Label contentDisplay="CENTER" layoutX="34.0" layoutY="14.0" prefHeight="37.0" prefWidth="201.0" text="                Login" textAlignment="JUSTIFY">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <MenuBar prefHeight="25.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <ImageView fitHeight="63.0" fitWidth="78.0" layoutX="360.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../Downloads/logo-png.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="180.0" layoutY="333.0" prefHeight="17.0" prefWidth="163.0" text="Powered and supported By ;" />
+   </children>
+</AnchorPane>

@@ -21,7 +21,7 @@ public class StageListener implements ApplicationListener<JavaFxApplication.Stag
     private final ApplicationContext applicationContext;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
-                         @Value("classpath:/ui.fxml") Resource fxml, ApplicationContext applicationContext) {
+                         @Value("classpath:/Main.fxml") Resource fxml, ApplicationContext applicationContext) {
         this.applicationTitle = applicationTitle;
         this.fxml = fxml;
         this.applicationContext = applicationContext;
