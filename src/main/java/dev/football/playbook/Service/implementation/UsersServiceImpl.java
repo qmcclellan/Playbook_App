@@ -4,13 +4,19 @@ import dev.football.playbook.Dao.UsersDao;
 import dev.football.playbook.Entity.Users;
 import dev.football.playbook.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UsersServiceImpl implements UserService {
+public class UsersServiceImpl implements UserService, UserDetailsService {
 
     private final UsersDao usersDao;
 
@@ -55,23 +61,23 @@ public class UsersServiceImpl implements UserService {
 //    }
 
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//
-//        Users user = findByUserName(username);
-//        if (user == null) {
-//
-//            throw new UsernameNotFoundException("Invalid username or password.");
-//        }
-//
-//        List<GrantedAuthority>authorities = new ArrayList<>();
-//
-//        authorities.add(new SimpleGrantedAuthority(user.getRoles().toString()));
-//
-//        return new User(user.getUserName(), user.getPassword().trim(), authorities); //removed .trim()
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    private Users findByUserName(String username) {
+        Users user = findByUserName(username);
+        if (user == null) {
+
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+
+        List<GrantedAuthority>authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(user.getRoles().toString()));
+
+        return new User(user.getUserName(), user.getPassword().trim(), authorities); //removed .trim()
+    }
+
+    public Users findByUserName(String username) {
 
         return usersDao.findByUserName(username);
     }

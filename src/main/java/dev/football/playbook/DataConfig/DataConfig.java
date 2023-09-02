@@ -30,10 +30,10 @@ public class DataConfig {
                 .build();
     }
 
-//    @Bean
-//    @ConfigurationProperties(prefix = "security.datasource")
-//    public DataSource securityDataSource() {
-//        return DataSourceBuilder.create().build();
-//    }
+    @Bean
+    @ConfigurationProperties(prefix = "security.datasource")
+    public DataSource securityDataSource() {
+        return DataSourceBuilder.create().build();
+    }
     }
 

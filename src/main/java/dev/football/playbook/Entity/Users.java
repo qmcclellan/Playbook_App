@@ -93,6 +93,9 @@ public class Users {
         this.roles = roles;
     }
 
+    public String getRole(){
+       return getRoles().stream().toList().get(0).getName();
+    }
     @Override
     public String toString() {
         return "Users{" +
