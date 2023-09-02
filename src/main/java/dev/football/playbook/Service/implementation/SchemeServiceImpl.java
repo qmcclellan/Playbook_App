@@ -48,13 +48,13 @@ public class SchemeServiceImpl implements SchemeService {
         schemeDao.deleteById(id);
     }
 
-//    @Override
-//    public List<Scheme> findAllByPlayBookId(int id) {
-//        return schemeDao.findAllByPlayBookId(id);
-//    }
-//
-//    @Override
-//    public Scheme findByPlayId(int id) {
-//        return schemeDao.findByPlayId(id);
-//    }
+
+    public List<Scheme> findAllByFormationId(int id) {
+        return schemeDao.findAllByFormationId(id);
+    }
+
+
+    public Scheme findByPlayId(int id) {
+        return schemeDao.findByPlayId(id);
+    }
 }

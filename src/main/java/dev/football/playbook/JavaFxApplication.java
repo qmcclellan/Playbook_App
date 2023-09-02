@@ -9,7 +9,9 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JavaFxApplication extends Application {
 
 
@@ -28,6 +30,7 @@ public class JavaFxApplication extends Application {
                 .build().run(getParameters().getRaw().toArray(new String[0]));
     }
 
+
     @Override
     public void start(Stage primaryStage) {
         this.context.publishEvent(new StageReadyEvent(primaryStage));
@@ -45,8 +48,8 @@ public class JavaFxApplication extends Application {
             return (Stage) getSource();
         }
 
-        public StageReadyEvent(Object source) {
-            super(source);
+        public StageReadyEvent(Stage stage) {
+            super(stage);
         }
     }
 }

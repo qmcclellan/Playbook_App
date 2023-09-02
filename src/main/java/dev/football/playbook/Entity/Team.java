@@ -18,7 +18,7 @@ public class Team {
     @Column(name="image")
     private String image;
 
-    @OneToMany(mappedBy="team")
+    @OneToMany(mappedBy="team",cascade = CascadeType.ALL)
     List<PlayBook> playBooks;
 
     public Team() {

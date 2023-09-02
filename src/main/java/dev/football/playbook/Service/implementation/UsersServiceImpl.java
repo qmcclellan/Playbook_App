@@ -4,11 +4,6 @@ import dev.football.playbook.Dao.UsersDao;
 import dev.football.playbook.Entity.Users;
 import dev.football.playbook.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,21 +55,21 @@ public class UsersServiceImpl implements UserService {
 //    }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Users user = findByUserName(username);
-        if (user == null) {
-
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-
-        List<GrantedAuthority>authorities = new ArrayList<>();
-
-        authorities.add(new SimpleGrantedAuthority(user.getRoles().toString()));
-
-        return new User(user.getUserName(), user.getPassword().trim(), authorities); //removed .trim()
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//
+//        Users user = findByUserName(username);
+//        if (user == null) {
+//
+//            throw new UsernameNotFoundException("Invalid username or password.");
+//        }
+//
+//        List<GrantedAuthority>authorities = new ArrayList<>();
+//
+//        authorities.add(new SimpleGrantedAuthority(user.getRoles().toString()));
+//
+//        return new User(user.getUserName(), user.getPassword().trim(), authorities); //removed .trim()
+//    }
 
     private Users findByUserName(String username) {
 

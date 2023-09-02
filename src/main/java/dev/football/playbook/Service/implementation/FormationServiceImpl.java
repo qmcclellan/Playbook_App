@@ -2,6 +2,7 @@ package dev.football.playbook.Service.implementation;
 
 import dev.football.playbook.Dao.FormationDao;
 import dev.football.playbook.Entity.Formation;
+import dev.football.playbook.Entity.PlayBook;
 import dev.football.playbook.Service.FormationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,12 @@ public class FormationServiceImpl implements FormationService {
 
         formationDao.deleteById(id);
 
+    }
+
+    public List<Formation> findAllByPlayBook(PlayBook playBook){
+
+        List<Formation> formations = formationDao.findAllByPlayBook(playBook);
+
+        return formations;
     }
 }

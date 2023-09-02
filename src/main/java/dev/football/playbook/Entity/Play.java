@@ -23,7 +23,9 @@ public class Play {
 
     @Column(name = "image")
     private String imagePath;
-    //private PlayType type;
+
+    @Column(name="play_type")
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "play_id", nullable = false)
@@ -32,12 +34,11 @@ public class Play {
     public Play() {
     }
 
-    public Play(String name, String pros, String cons, String imagePath, Scheme scheme) {
+    public Play(String name, String pros, String cons, String imagePath) {
         this.name = name;
         this.pros = pros;
         this.cons = cons;
         this.imagePath = imagePath;
-        this.scheme = scheme;
     }
 
     public Play(Integer id, String name, String pros, String cons, String imagePath) {
@@ -46,6 +47,25 @@ public class Play {
         this.pros = pros;
         this.cons = cons;
         this.imagePath = imagePath;
+    }
+
+    public Play(String name, String pros, String cons, String imagePath, String type, Scheme scheme) {
+        this.name = name;
+        this.pros = pros;
+        this.cons = cons;
+        this.imagePath = imagePath;
+        this.type = type;
+        this.scheme = scheme;
+    }
+
+    public Play(Integer id, String name, String pros, String cons, String imagePath, String type, Scheme scheme) {
+        this.id = id;
+        this.name = name;
+        this.pros = pros;
+        this.cons = cons;
+        this.imagePath = imagePath;
+        this.type = type;
+        this.scheme = scheme;
     }
 
     public Integer getId() {
@@ -88,6 +108,14 @@ public class Play {
         this.imagePath = imagePath;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Scheme getScheme() {
         return scheme;
     }
@@ -104,9 +132,7 @@ public class Play {
                 ", pros='" + pros + '\'' +
                 ", cons='" + cons + '\'' +
                 ", imagePath='" + imagePath + '\'' +
-                ", scheme=" + scheme +
+                ", type='" + type + '\'' +
                 '}';
     }
-
-
 }

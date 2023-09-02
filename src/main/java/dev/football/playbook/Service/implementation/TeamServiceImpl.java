@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class TeamServiceImpl implements TeamService {
 
@@ -14,17 +15,18 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     public TeamServiceImpl(TeamDao teamDao) {
+
         this.teamDao = teamDao;
     }
 
     @Override
     public List<Team> findAll() {
-        return teamDao.findAll();
+        return null;
     }
 
     @Override
     public void saveTeam(Team team) {
-        teamDao.save(team);
+
     }
 
     @Override
@@ -33,17 +35,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<Team> saveTeamAndFlush(List<Team> teams) {
-        return teamDao.saveAllAndFlush(teams);
+    public List<Team> saveTeamAndFlush(List<Team> team) {
+        return null;
     }
 
     @Override
     public Team getTeam(int id) {
-        return teamDao.getReferenceById(id);
+        return null;
     }
 
     @Override
     public void deleteTeam(int id) {
-        teamDao.deleteById(id);
+
     }
 }

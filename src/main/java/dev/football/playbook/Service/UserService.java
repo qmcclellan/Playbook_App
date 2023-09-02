@@ -1,11 +1,10 @@
 package dev.football.playbook.Service;
 
 import dev.football.playbook.Entity.Users;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
-
-public interface UserService extends UserDetailsService {
+//extends UserDetailsService
+public interface UserService  {
 
     public List<Users> findAll();
     public void saveUsers(Users user);

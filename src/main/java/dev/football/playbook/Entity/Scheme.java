@@ -10,8 +10,6 @@ import java.util.List;
 @Table(schema="Playbook", name="Scheme")
 public class Scheme {
 
-
-    private enum SchemeType{}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,10 +17,7 @@ public class Scheme {
     private String name;
 
     @Column(name="type")
-    private SchemeType type;
-
-    @Column(name="image")
-    private String imagePath;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name="formation_id")
@@ -34,18 +29,16 @@ public class Scheme {
     public Scheme() {
     }
 
-    public Scheme(String name, SchemeType type, String imagePath, Formation formation) {
+    public Scheme(String name, String type, Formation formation) {
         this.name = name;
         this.type = type;
-        this.imagePath = imagePath;
         this.formation = formation;
     }
 
-    public Scheme(Integer id, String name, SchemeType type, String imagePath, Formation formation) {
+    public Scheme(Integer id, String name, String type, Formation formation) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.imagePath = imagePath;
         this.formation = formation;
     }
 
@@ -65,20 +58,12 @@ public class Scheme {
         this.name = name;
     }
 
-    public SchemeType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(SchemeType type) {
+    public void setType(String type) {
         this.type = type;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 
     public Formation getFormation() {
@@ -113,7 +98,6 @@ public class Scheme {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
-                ", imagePath='" + imagePath + '\'' +
                 ", formations=" + formation +
                 ", plays=" + plays +
                 '}';

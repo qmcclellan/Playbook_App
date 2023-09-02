@@ -8,15 +8,13 @@ import java.util.*;
 @Table(schema="\"Playbook\"", name="\"playbook\"")
 public class PlayBook {
 
-
-    private enum PlaybookType{OFFENSE, DEFENSE}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name="name")
     private String name;
     @Column(name = "type")
-    private PlaybookType type;
+    private String type;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name="coach_id")
@@ -32,19 +30,19 @@ public class PlayBook {
     public PlayBook() {
     }
 
-    public PlayBook(String name, PlaybookType type) {
+    public PlayBook(String name, String type) {
         this.name = name;
         this.type = type;
     }
 
-    public PlayBook(Integer id, String name, PlaybookType type) {
+    public PlayBook(Integer id, String name, String type) {
         this.id = id;
         this.name = name;
         this.type = type;
     }
 
 
-    public PlayBook(String name, PlaybookType type, Team team, List<Formation> formations) {
+    public PlayBook(String name, String type, Team team, List<Formation> formations) {
         this.name = name;
         this.type = type;
         this.team = team;
@@ -53,7 +51,7 @@ public class PlayBook {
 
 
 
-    public PlayBook(Integer id, String name, PlaybookType type, Team team, List<Formation> formations) {
+    public PlayBook(Integer id, String name, String type, Team team, List<Formation> formations) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -78,11 +76,11 @@ public class PlayBook {
         this.name = name;
     }
 
-    public PlaybookType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(PlaybookType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
